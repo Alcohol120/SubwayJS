@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./sources",
+    "module": "es2015",
+    "target": "es6",
+    "sourceMap": true,
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "useDefineForClassFields": true,
+    "paths": {
+      "Subway/*": ["./*"]
+    }
+  },
+  "include": ["./sources"],
+  "exclude": ["./builds", "./node_modules"],
+  "lib": ["es2015", "dom", "es6"]
+}

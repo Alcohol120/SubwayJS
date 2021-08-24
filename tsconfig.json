@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./sources",
+    "module": "CommonJS",
+    "target": "es6",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "useDefineForClassFields": true,
+    "declaration": true,
+    "paths": {
+      "Subway/*": ["./*"]
+    }
+  },
+  "include": ["./sources"],
+  "exclude": ["./builds", "./node_modules"]
+}
