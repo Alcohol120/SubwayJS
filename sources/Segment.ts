@@ -1,4 +1,4 @@
-export enum SegmentType {
+export enum ESegmentType {
     COMMON,
     ANY,
     ALPHA,
@@ -8,12 +8,12 @@ export enum SegmentType {
 
 export class Segment {
 
-    private readonly _type : SegmentType;
+    private readonly _type : ESegmentType;
     private readonly _name : string;
     private readonly _pattern : RegExp;
     private readonly _optional : boolean;
 
-    public get type() : SegmentType {
+    public get type() : ESegmentType {
         return this._type;
     }
 
@@ -38,31 +38,31 @@ export class Segment {
 
     public estimate(segment : string) : number {
         let rate = -1;
-        if(this._type == SegmentType.COMMON) {
+        if(this._type == ESegmentType.COMMON) {
             rate = segment == this._name ? 3 : -1;
-        } else if(this._type == SegmentType.ANY) {
+        } else if(this._type == ESegmentType.ANY) {
             rate = segment ? 1 : -1;
-        } else if(this._type == SegmentType.ALPHA) {
+        } else if(this._type == ESegmentType.ALPHA) {
             rate = segment.match(/^[a-z\-_]+$/i) ? 2 : -1;
-        } else if(this._type == SegmentType.INTEGER) {
+        } else if(this._type == ESegmentType.INTEGER) {
             rate = segment.match(/^[0-9]+$/) ? 2 : -1;
-        } else if(this._type == SegmentType.PATTERN) {
+        } else if(this._type == ESegmentType.PATTERN) {
             rate = segment.match(this._pattern) ? 2 : -1;
         }
         if(rate < 0 && this._optional) rate = 0;
         return rate;
     }
 
-    private static getType(source : string) : SegmentType {
+    private static getType(source : string) : ESegmentType {
         if(!source.match(/^{.+?}\??$/)) {
-            return SegmentType.COMMON;
+            return ESegmentType.COMMON;
         } else if(!source.match(/^{.+?:.+?}\??$/)) {
-            return SegmentType.ANY;
+            return ESegmentType.ANY;
         } else if(source.match(/^{.+?:a}\??$/)) {
-            return SegmentType.ALPHA;
+            return ESegmentType.ALPHA;
         } else if(source.match(/^{.+?:i}\??$/)) {
-            return SegmentType.INTEGER;
-        } else return SegmentType.PATTERN;
+            return ESegmentType.INTEGER;
+        } else return ESegmentType.PATTERN;
     }
 
     private static getName(source : string) : string {

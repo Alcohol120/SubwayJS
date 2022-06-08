@@ -2,12 +2,12 @@ import { Group } from 'Subway/Group';
 import { Route } from 'Subway/Route';
 import { Request } from 'Subway/Request';
 
-type OnFailed = (request : Request) => void;
+type TOnFailed = (request : Request) => void;
 
 export class Map extends Group {
 
     private _routes : Route[] = [];
-    private _onFailed : OnFailed = function () {};
+    private _onFailed : TOnFailed = function () {};
 
     constructor() {
         super('', null);
@@ -17,7 +17,7 @@ export class Map extends Group {
         this._routes = this.getRoutes();
     }
 
-    public fallback(onFailed : OnFailed) : void {
+    public fallback(onFailed : TOnFailed) : void {
         this._onFailed = onFailed;
     }
 

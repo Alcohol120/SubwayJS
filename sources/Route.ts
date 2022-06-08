@@ -1,27 +1,27 @@
-import { Segment, SegmentType } from 'Subway/Segment';
+import { Segment, ESegmentType } from 'Subway/Segment';
 import { Request } from 'Subway/Request';
 
-export interface RouteProps {
+export interface IRouteProps {
     name : string,
     groups : string[],
     segments : Segment[],
-    middleware : Middleware[],
+    middleware : TMiddleware[],
 }
 
-export type Middleware = (
+export type TMiddleware = (
     request : Request,
-    onLoad : OnLoad,
+    onLoad : TOnLoad,
 ) => boolean;
 
-export type OnLoad = (request : Request, route : Route) => void;
+export type TOnLoad = (request : Request, route : Route) => void;
 
 export class Route {
 
     private readonly _name : string = '';
     private readonly _groups : string[] = [];
     private readonly _segments : Segment[] = [];
-    private readonly _middleware : Middleware[] = [];
-    private readonly _onLoad : OnLoad;
+    private readonly _middleware : TMiddleware[] = [];
+    private readonly _onLoad : TOnLoad;
 
     public get name() : string {
         return this._name;
@@ -31,7 +31,7 @@ export class Route {
         return this._groups;
     }
 
-    constructor(props : RouteProps, onLoad : OnLoad) {
+    constructor(props : IRouteProps, onLoad : TOnLoad) {
         this._name = props.name;
         this._groups = props.groups;
         this._segments = props.segments;
@@ -140,7 +140,7 @@ export class Route {
         for(let i = 0; i < relations.length; i++) {
             const segment = this._segments[i];
             const pathIndex = relations[i];
-            if(pathIndex < 0 || segment.type == SegmentType.COMMON) continue;
+            if(pathIndex < 0 || segment.type == ESegmentType.COMMON) continue;
             props[segment.name] = paths[pathIndex];
         }
         return props;
@@ -151,21 +151,21 @@ export class Route {
         for(let i = 0; i < this._segments.length; i++) {
             const segment = this._segments[i];
             if(segment.optional && !props.hasOwnProperty(segment.name)) continue;
-            if(segment.type == SegmentType.COMMON) {
+            if(segment.type == ESegmentType.COMMON) {
                 paths.push(segment.name);
                 continue;
             }
             const prop = props[segment.name];
-            if(segment.type == SegmentType.ALPHA) {
+            if(segment.type == ESegmentType.ALPHA) {
                 if(!prop.match(/^[a-z\-_]+$/i)) return null;
                 paths.push(prop);
-            } else if(segment.type == SegmentType.INTEGER) {
+            } else if(segment.type == ESegmentType.INTEGER) {
                 if(!prop.match(/^\d+$/)) return null;
                 paths.push(prop);
-            } else if(segment.type == SegmentType.PATTERN) {
+            } else if(segment.type == ESegmentType.PATTERN) {
                 if(!prop.match(segment.pattern)) return null;
                 paths.push(prop);
-            } else if(segment.type == SegmentType.ANY) {
+            } else if(segment.type == ESegmentType.ANY) {
                 if(!prop) return null;
                 paths.push(prop);
             }

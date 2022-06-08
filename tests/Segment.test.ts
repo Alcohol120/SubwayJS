@@ -1,4 +1,4 @@
-import { Segment, SegmentType } from 'Subway/Segment';
+import { Segment, ESegmentType } from 'Subway/Segment';
 
 describe('Segment', function () {
     describe('estimate', function () {
@@ -33,19 +33,19 @@ describe('Segment', function () {
     });
     describe('getType', function () {
         it('Return COMMON type', function () {
-            expect((Segment as any).getType('common')).toBe(SegmentType.COMMON);
+            expect((Segment as any).getType('common')).toBe(ESegmentType.COMMON);
         });
         it('Return ANY type', function () {
-            expect((Segment as any).getType('{any}')).toBe(SegmentType.ANY);
+            expect((Segment as any).getType('{any}')).toBe(ESegmentType.ANY);
         });
         it('Return ALPHA type', function () {
-            expect((Segment as any).getType('{str:a}')).toBe(SegmentType.ALPHA);
+            expect((Segment as any).getType('{str:a}')).toBe(ESegmentType.ALPHA);
         });
         it('Return INTEGER type', function () {
-            expect((Segment as any).getType('{int:i}')).toBe(SegmentType.INTEGER);
+            expect((Segment as any).getType('{int:i}')).toBe(ESegmentType.INTEGER);
         });
         it('Return PATTERN type', function () {
-            expect((Segment as any).getType('{reg:[a-z]+}')).toBe(SegmentType.PATTERN);
+            expect((Segment as any).getType('{reg:[a-z]+}')).toBe(ESegmentType.PATTERN);
         });
     });
     describe('getName', function () {

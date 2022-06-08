@@ -1,31 +1,31 @@
-import { Member, ParentProps } from 'Subway/Member';
+import { Member, IParentProps } from 'Subway/Member';
 import { Endpoint } from 'Subway/Endpoint';
-import { Route, OnLoad } from 'Subway/Route';
+import { Route, TOnLoad } from 'Subway/Route';
 
-type Child = (group : Group) => void;
+type TChild = (group : Group) => void;
 
 export class Group extends Member {
 
     protected _members : Member[] = [];
 
-    constructor(path : string, children : Child) {
+    constructor(path : string, children : TChild) {
         super(path);
         if(children) children(this);
     }
 
-    public group(path : string, onLoad : Child) : Group {
+    public group(path : string, onLoad : TChild) : Group {
         const group = new Group(path, onLoad);
         this._members.push(group);
         return group;
     }
 
-    public route(path : string, onLoad : OnLoad) : Endpoint {
+    public route(path : string, onLoad : TOnLoad) : Endpoint {
         const endpoint = new Endpoint(path, onLoad);
         this._members.push(endpoint);
         return endpoint;
     }
 
-    public getRoutes(parentProps? : ParentProps) : Route[] {
+    public getRoutes(parentProps? : IParentProps) : Route[] {
         const routes : Route[] = [];
         const props = this.joinProps(parentProps);
         for(let i = 0; i < this._members.length; i++) {
@@ -39,7 +39,7 @@ export class Group extends Member {
         return routes;
     }
 
-    private joinProps(parentProps? : ParentProps) : ParentProps {
+    private joinProps(parentProps? : IParentProps) : IParentProps {
         parentProps = parentProps || { groups: [], segments: [], middleware: [] };
         return {
             groups: [ ...parentProps.groups, ...this._name ? [ this._name ] : [] ],
