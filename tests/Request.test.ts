@@ -34,16 +34,6 @@ describe('Request', function () {
             expect(new Request('/foo/bar?foo=1').key('bar')).toBe('');
         });
     });
-    describe('prop', function () {
-        const req = new Request('');
-        req.props = { foo: '1' };
-        it('Return specific prop', function () {
-            expect(req.prop('foo')).toBe('1');
-        });
-        it('Return empty string for undefined prop', function () {
-            expect(req.prop('sec')).toBe('');
-        });
-    });
     describe('getUrl', function () {
         it('Return full URL', function () {
             expect((new Request('http://example.com/foo/bar?foo=1#bar') as any).getUrl())

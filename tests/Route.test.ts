@@ -1,4 +1,5 @@
 import { Route } from 'Subway/Route';
+import { Request } from 'Subway/Request';
 import { Segment } from 'Subway/Segment';
 
 const getRoute = function (path : string) : Route {
@@ -40,63 +41,44 @@ describe('Route', function () {
     });
     describe('estimate', function () {
         it('Return -1 if no matches pattern', function () {
-            expect(getRoute('foo/bar').estimate([ 'bar' ])).toBe(-1);
-            expect(getRoute('foo/bar?/second').estimate([ 'foo' ])).toBe(-1);
+            expect(getRoute('foo/bar').estimate(new Request('bar'))).toBe(-1);
+            expect(getRoute('foo/bar?/second').estimate(new Request('foo'))).toBe(-1);
         });
         it('Return 0 for index route', function () {
-            expect(getRoute('').estimate([])).toBe(0);
-            expect(getRoute('').estimate([ 'foo' ])).toBe(0);
+            expect(getRoute('').estimate(new Request(''))).toBe(0);
+            expect(getRoute('').estimate(new Request('foo'))).toBe(0);
         });
         it('Return rate with simple segments', function () {
-            expect(getRoute('foo/bar').estimate(['foo', 'bar'])).toBe(6);
-            expect(getRoute('foo/{any:i}').estimate(['foo', '1'])).toBe(5);
-            expect(getRoute('foo/{any:a}').estimate(['foo', 's-s'])).toBe(5);
-            expect(getRoute('foo/{any:[a-z0-9]{4}}').estimate(['foo', 'bb22'])).toBe(5);
-            expect(getRoute('foo/{any}').estimate(['foo', 'bar'])).toBe(4);
+            expect(getRoute('foo/bar').estimate(new Request('foo/bar'))).toBe(6);
+            expect(getRoute('foo/{any:i}').estimate(new Request('foo/1'))).toBe(5);
+            expect(getRoute('foo/{any:a}').estimate(new Request('foo/s-s'))).toBe(5);
+            expect(getRoute('foo/{any:[a-z0-9]{4}}').estimate(new Request('foo/bb22'))).toBe(5);
+            expect(getRoute('foo/{any}').estimate(new Request('foo/bar'))).toBe(4);
 
-            expect(getRoute('foo/bar?').estimate(['foo'])).toBe(3);
-            expect(getRoute('foo/{any:i}?').estimate(['foo'])).toBe(3);
-            expect(getRoute('foo/{any:a}?').estimate(['foo'])).toBe(3);
-            expect(getRoute('foo/{any:[a-z0-9]{4}}?').estimate(['foo'])).toBe(3);
-            expect(getRoute('foo/{any}?').estimate(['foo'])).toBe(3);
+            expect(getRoute('foo/bar?').estimate(new Request('foo'))).toBe(3);
+            expect(getRoute('foo/{any:i}?').estimate(new Request('foo'))).toBe(3);
+            expect(getRoute('foo/{any:a}?').estimate(new Request('foo'))).toBe(3);
+            expect(getRoute('foo/{any:[a-z0-9]{4}}?').estimate(new Request('foo'))).toBe(3);
+            expect(getRoute('foo/{any}?').estimate(new Request('foo'))).toBe(3);
 
-            expect(getRoute('foo/bar?').estimate(['foo', 'n'])).toBe(3);
-            expect(getRoute('foo/{any:i}?').estimate(['foo', 'n'])).toBe(3);
-            expect(getRoute('foo/{any:a}?').estimate(['foo', '1'])).toBe(3);
-            expect(getRoute('foo/{any:[a-z0-9]{4}}?').estimate(['foo', 'n'])).toBe(3);
+            expect(getRoute('foo/bar?').estimate(new Request('foo/n'))).toBe(3);
+            expect(getRoute('foo/{any:i}?').estimate(new Request('foo/n'))).toBe(3);
+            expect(getRoute('foo/{any:a}?').estimate(new Request('foo/1'))).toBe(3);
+            expect(getRoute('foo/{any:[a-z0-9]{4}}?').estimate(new Request('foo/n'))).toBe(3);
         });
         it('Return rate with complicated optional segments', function () {
-            expect(getRoute('first/second?/third').estimate(['first', 'third'])).toBe(6);
-            expect(getRoute('first/second?/third').estimate(['first', 'second', 'third'])).toBe(9);
+            expect(getRoute('first/second?/third').estimate(new Request('first/third'))).toBe(6);
+            expect(getRoute('first/second?/third').estimate(new Request('first/second/third'))).toBe(9);
 
-            expect(getRoute('first/{any}?/second').estimate(['first', 'second'])).toBe(6);
-            expect(getRoute('first/{any}?/{any}?/second').estimate(['first', 'second'])).toBe(6);
-            expect(getRoute('first/{any}?/{any}?/{any}?/second').estimate(['first', 'test', 'second'])).toBe(7);
+            expect(getRoute('first/{any}?/second').estimate(new Request('first/second'))).toBe(6);
+            expect(getRoute('first/{any}?/{any}?/second').estimate(new Request('first/second'))).toBe(6);
+            expect(getRoute('first/{any}?/{any}?/{any}?/second').estimate(new Request('first/test/second'))).toBe(7);
 
-            expect(getRoute('{any}?/{v1:i}?/second/third?/{v2:[a-z]+}').estimate(['1', 'second', 'third'])).toBe(7);
+            expect(getRoute('{any}?/{v1:i}?/second/third?/{v2:[a-z]+}').estimate(new Request('1/second/third'))).toBe(7);
 
-            expect(getRoute('first/{any}?/{any}?/end?').estimate(['first', 'second'])).toBe(4);
+            expect(getRoute('first/{any}?/{any}?/end?').estimate(new Request('first/second'))).toBe(4);
 
-            expect(getRoute('{any1}?/{any2}?/{int:i}?/{any3}?/end').estimate(['1', 'end'])).toBe(5);
-        });
-    });
-    describe('collectProps', function () {
-        it('Return props collection', function () {
-            expect(getRoute('foo/{bar}').collectProps([ 'foo', 'bar' ])).toEqual({ bar: 'bar' });
-            expect(getRoute('foo/{bar}?/{sec:i}').collectProps([ 'foo', '1' ])).toEqual({ sec: '1' });
-            expect(getRoute('foo/{bar:[a-z]+}?/{sec:i}').collectProps([ 'foo', '1' ])).toEqual({ sec: '1' });
-            expect(getRoute('foo/{bar:[a-z]+}?/{sec:i}').collectProps([ 'foo', 'a', '1' ])).toEqual({ bar: 'a', sec: '1' });
-            expect(getRoute('foo/{bar:i}?/{sec:i}').collectProps([ 'foo', '1' ])).toEqual({ sec: '1' });
-            expect(getRoute('foo/{bar:i}?/{sec:i}').collectProps([ 'foo', '1', '2' ])).toEqual({ bar: '1', sec: '2' });
-            expect(getRoute('foo/{bar:i}/sec').collectProps([ 'foo', '1', 'sec' ])).toEqual({ bar: '1' });
-            expect(getRoute('foo/{bar:a}/sec').collectProps([ 'foo', 'a', 'sec' ])).toEqual({ bar: 'a' });
-            expect(getRoute('{any1}?/{any2}?/{int:i}/{any3}?/end').collectProps([ '1', 'end' ])).toEqual({ int: '1' });
-            expect(getRoute('{any1}?/{any2}?/{int:i}?/{any3}?/end').collectProps([ '1', 'end' ])).toEqual({ int: '1' });
-            expect(getRoute('{any1}?/{any2}?/{int:i}?/{any3}?/end').collectProps([ 'a', '1', 'end' ])).toEqual({ any1: 'a', int: '1' });
-        });
-        it('Return empty collection', function () {
-            expect(getRoute('foo/{bar}').collectProps([ 'foo' ])).toEqual({});
-            expect(getRoute('foo/{bar}?/sec').collectProps([ 'foo', 'bar' ])).toEqual({});
+            expect(getRoute('{any1}?/{any2}?/{int:i}?/{any3}?/end').estimate(new Request('1/end'))).toBe(5);
         });
     });
     describe('getUrl', function () {

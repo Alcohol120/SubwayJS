@@ -4,7 +4,6 @@ export class Request {
     private readonly _segments : string[];
     private readonly _keys : Record<string, string>;
     private readonly _anchor : string;
-    private _props : Record<string, string>;
 
     public get origin() : string {
         return this._origin;
@@ -34,14 +33,6 @@ export class Request {
         return this._anchor;
     }
 
-    public get props() : Record<string, string> {
-        return this._props;
-    }
-
-    public set props(vars : Record<string, string>) {
-        this._props = vars;
-    }
-
     constructor(url : string) {
         const parts = url.match(/^(https?:\/{2}(.*?)(\/|$))?(.*?)(\?.*?)?(#.*?)?$/) || [];
         this._origin = parts[1] ? parts[1].slice(0, parts[1].length - 1) : '';
@@ -57,10 +48,6 @@ export class Request {
 
     public key(name : string) : string {
         return this._keys[name] || '';
-    }
-
-    public prop(name : string) : string {
-        return this._props[name] || '';
     }
 
     private getUrl() : string {

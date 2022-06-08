@@ -23,25 +23,19 @@ export class Map extends Group {
 
     public dispatch(url : string) : void {
         const request = new Request(url);
-        const route = this.getBestRoute(request.segments);
-        if(route) {
-            request.props = route.collectProps(request.segments);
-            route.handle(request);
-        } else this._onFailed(request);
-    }
-
-    private getBestRoute(segments : string[]) : Route {
         let bestRate = -1;
         let bestRoute = null;
         for(let i = 0; i < this._routes.length; i++) {
             const route = this._routes[i];
-            const rate = route.estimate(segments);
+            const rate = route.estimate(request);
             if(rate > bestRate) {
                 bestRate = rate;
                 bestRoute = route;
             }
         }
-        return bestRoute;
+        if(bestRoute) {
+            bestRoute.resolve(request);
+        } else this._onFailed(request);
     }
 
 }
