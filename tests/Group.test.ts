@@ -1,7 +1,6 @@
 import { Group } from 'Subway/Group';
 import { Endpoint } from 'Subway/Endpoint';
 import { Segment } from 'Subway/Segment';
-import { Middleware } from 'Subway/Middleware';
 import { Route } from 'Subway/Route';
 
 describe('Group', function () {
@@ -15,7 +14,7 @@ describe('Group', function () {
         it('Call children callback', function () {
             const group = new (Group as any)('', null);
             let called = false;
-            group.group('', function (group) { called = true });
+            group.group('', function () { called = true });
             expect(called).toBe(true);
         });
         it('Return added group', function () {

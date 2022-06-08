@@ -1,5 +1,5 @@
 import { Member } from 'Subway/Member';
-import { Middleware } from 'Subway/Middleware';
+import { Middleware } from 'Subway/Route';
 
 describe('Member', function () {
     describe('name', function () {

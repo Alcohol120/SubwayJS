@@ -1,6 +1,6 @@
 import path from 'path';
 import TerserJSPlugin from 'terser-webpack-plugin';
-import { ForkTsCheckerWebpackPlugin } from 'fork-ts-checker-webpack-plugin/lib/ForkTsCheckerWebpackPlugin';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin/lib';
 
 module.exports = env => {
     env = env || {};
