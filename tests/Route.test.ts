@@ -9,7 +9,7 @@ const getRoute = function (path : string) : Route {
     return new Route({
         name: '',
         groups: [],
-        segments: segments,
+        segments,
         middleware: [],
     }, null);
 };

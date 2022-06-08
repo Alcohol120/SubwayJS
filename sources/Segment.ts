@@ -71,7 +71,7 @@ export class Segment {
 
     private static getPattern(source : string) : RegExp {
         const pattern = (source.match(/^{.+?:(.+?)}\??$/) || [])[1];
-        if(pattern && ['a', 'i'].indexOf(pattern) < 0) {
+        if(pattern && [ 'a', 'i' ].indexOf(pattern) < 0) {
             return new RegExp(pattern, 'i');
         } else return null;
     }

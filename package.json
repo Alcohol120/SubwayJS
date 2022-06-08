@@ -28,6 +28,7 @@
   "scripts": {
     "test": "jest",
     "test:coverage": "jest --coverage",
+    "eslint": "npx eslint ./sources/** ./tests/**",
     "build": "npm run build:npm && npm run build:web",
     "build:npm": "npx tsc --project tsconfig.npm.json && npx tsc-alias -p tsconfig.npm.json",
     "build:web": "npm run build:web:dev && npm run build:web:prod",
@@ -36,6 +37,9 @@
   },
   "devDependencies": {
     "@types/jest": "^28.1.1",
+    "@typescript-eslint/eslint-plugin": "^5.27.1",
+    "@typescript-eslint/parser": "^5.27.1",
+    "eslint": "^8.17.0",
     "fork-ts-checker-webpack-plugin": "^7.2.11",
     "jest": "^28.1.1",
     "terser-webpack-plugin": "^5.3.3",

@@ -6,13 +6,13 @@ describe('Request', function () {
             let req;
             req = (new Request('http://example.com/foo/bar?foo=1&bar=2#foo') as any);
             expect(req._origin).toBe('http://example.com');
-            expect(req._segments).toEqual(['foo', 'bar']);
+            expect(req._segments).toEqual([ 'foo', 'bar' ]);
             expect(req._keys).toEqual({ foo: '1', bar: '2' });
             expect(req._anchor).toBe('#foo');
 
             req = (new Request('/foo/bar?foo=1&bar=2#foo') as any);
             expect(req._origin).toBe('');
-            expect(req._segments).toEqual(['foo', 'bar']);
+            expect(req._segments).toEqual([ 'foo', 'bar' ]);
             expect(req._keys).toEqual({ foo: '1', bar: '2' });
             expect(req._anchor).toBe('#foo');
         });
@@ -66,7 +66,7 @@ describe('Request', function () {
     });
     describe('parsePath', function () {
         it('Return segments array', function () {
-            expect((Request as any).parsePath(' //foo//bar// ')).toEqual(['foo', 'bar']);
+            expect((Request as any).parsePath(' //foo//bar// ')).toEqual([ 'foo', 'bar' ]);
         });
         it('Return empty array', function () {
             expect((Request as any).parsePath(' // ')).toEqual([]);

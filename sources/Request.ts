@@ -41,9 +41,9 @@ export class Request {
         this._anchor = parts[6] || '';
     }
 
-    public segment(number : number) : string {
-        number = number > 0 ? number - 1 : 0;
-        return this._segments[number] || '';
+    public segment(num : number) : string {
+        const normalized = num > 0 ? num - 1 : 0;
+        return this._segments[normalized] || '';
     }
 
     public key(name : string) : string {
@@ -61,7 +61,7 @@ export class Request {
 
     private getQuery() : string {
         const props = [];
-        for(let name in this._keys) {
+        for(const name in this._keys) {
             if(!this._keys.hasOwnProperty(name)) continue;
             props.push(`${name}=${this._keys[name] || ''}`);
         }
@@ -69,22 +69,22 @@ export class Request {
     }
 
     private static parsePath(path : string) : string[] {
-        path = (path || '')
+        const normalized = (path || '')
             .trim()
             .replace(/^\/+/, '')
             .replace(/\/+$/, '')
             .replace(/\/+/, '/');
-        return path ? path.split('/') : [];
+        return normalized ? normalized.split('/') : [];
     }
 
     private static parseQuery(query : string) : Record<string, string> {
-        query = (query || '')
+        const normalized = (query || '')
             .trim()
             .replace(/^[?&]+/, '')
             .replace(/&+/, '&');
-        if(!query) return {};
+        if(!normalized) return {};
         const keys = {};
-        const props = query.split('&');
+        const props = normalized.split('&');
         for(let i = 0; i < props.length; i++) {
             if(!props[i]) continue;
             const temp = props[i].split('=');

@@ -25,7 +25,7 @@ export class Group extends Member {
         return endpoint;
     }
 
-    public getRoutes(parentProps? : IParentProps) : Route[] {
+    public getRoutes(parentProps ?: IParentProps) : Route[] {
         const routes : Route[] = [];
         const props = this.joinProps(parentProps);
         for(let i = 0; i < this._members.length; i++) {
@@ -39,13 +39,12 @@ export class Group extends Member {
         return routes;
     }
 
-    private joinProps(parentProps? : IParentProps) : IParentProps {
-        parentProps = parentProps || { groups: [], segments: [], middleware: [] };
+    private joinProps(parentProps ?: IParentProps) : IParentProps {
         return {
-            groups: [ ...parentProps.groups, ...this._name ? [ this._name ] : [] ],
-            segments: [ ...parentProps.segments, ...this._segments ],
-            middleware: [ ...parentProps.middleware, ...this._middleware ],
-        }
+            groups: [ ...parentProps ? parentProps.groups : [], ...this._name ? [ this._name ] : [] ],
+            segments: [ ...parentProps ? parentProps.segments : [], ...this._segments ],
+            middleware: [ ...parentProps ? parentProps.middleware : [], ...this._middleware ],
+        };
     }
 
 }

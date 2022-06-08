@@ -14,7 +14,9 @@ describe('Group', function () {
         it('Call children callback', function () {
             const group = new (Group as any)('', null);
             let called = false;
-            group.group('', function () { called = true });
+            group.group('', function () {
+                called = true;
+            });
             expect(called).toBe(true);
         });
         it('Return added group', function () {
@@ -40,7 +42,9 @@ describe('Group', function () {
     describe('getRoutes', function () {
         it('Return routes', function () {
             const group = new (Group as any)('first', null);
-            group.group('second', function (g) { g.route('end', null) });
+            group.group('second', function (g) {
+                g.route('end', null);
+            });
             group.route('end', null);
             const routes = group.getRoutes();
             expect(routes.length).toBe(2);

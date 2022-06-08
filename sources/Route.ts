@@ -70,7 +70,8 @@ export class Route {
                     // reverse lookup success, reset rates of a skipped optional segments
                     for(let b = 1; b <= backwards; b++) rates[i - b] = 0;
                     backwards = 0;
-                } if(rate < 0) {
+                }
+                if(rate < 0) {
                     // estimation failed, reverse lookup is not possible or not efficient
                     return -1;
                 }
@@ -89,7 +90,7 @@ export class Route {
         return rate;
     }
 
-    public getUrl(props : Record<string, string>={}) : string {
+    public getUrl(props : Record<string, string> = {}) : string {
         const paths = [];
         for(let i = 0; i < this._segments.length; i++) {
             const segment = this._segments[i];

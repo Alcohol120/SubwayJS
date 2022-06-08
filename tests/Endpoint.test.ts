@@ -25,7 +25,7 @@ describe('Endpoint', function () {
             expect(props.middleware.length).toBe(1);
             expect(props.middleware[0]).toBe(middleware);
         });
-        it('Return merged properties', function () {
+        it('Return merged properties', () => {
             const endpoint = new (Endpoint as any)('', null);
             const segment1 = new Segment('foo');
             const segment2 = new Segment('bar');
