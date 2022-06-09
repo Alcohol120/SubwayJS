@@ -1,19 +1,18 @@
 {
   "name": "subway-router",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "The JavaScript router",
   "keywords": [
     "router",
-    "url",
-    "uri",
+    "sitemap",
     "middleware"
   ],
   "license": "MIT",
   "deprecated": false,
   "author": {
     "name": "Alco",
-    "email": "head@alclab.pro",
-    "url": "http://alclab.pro/"
+    "email": "alco@alclab.pro",
+    "url": "https://alclab.pro/"
   },
   "homepage": "https://github.com/Alcohol120/SubwayJS",
   "repository": {
