@@ -9,6 +9,7 @@
     "allowSyntheticDefaultImports": true,
     "useDefineForClassFields": true,
     "paths": {
+      "Subway": ["./index.ts"],
       "Subway/*": ["./*"]
     }
   },

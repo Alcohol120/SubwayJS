@@ -45,7 +45,7 @@ export class Segment {
         } else if(this._type == ESegmentType.ALPHA) {
             rate = segment.match(/^[a-z\-_]+$/i) ? 2 : -1;
         } else if(this._type == ESegmentType.INTEGER) {
-            rate = segment.match(/^[0-9]+$/) ? 2 : -1;
+            rate = segment.match(/^\d+$/) ? 2 : -1;
         } else if(this._type == ESegmentType.PATTERN) {
             rate = segment.match(this._pattern) ? 2 : -1;
         }

@@ -9,6 +9,7 @@
     "useDefineForClassFields": true,
     "declaration": true,
     "paths": {
+      "Subway": ["./index.ts"],
       "Subway/*": ["./*"]
     }
   },

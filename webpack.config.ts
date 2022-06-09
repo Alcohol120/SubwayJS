@@ -2,17 +2,17 @@ import path from 'path';
 import TerserJSPlugin from 'terser-webpack-plugin';
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin/lib';
 
-module.exports = env => {
-    env = env || {};
+module.exports = e => {
+    const env = e || {};
     return {
         target: 'web',
         mode: env.production ? 'production' : 'development',
         devtool: env.production ? false : 'cheap-module-source-map',
         resolve: {
             alias: {
-                'Subway': path.resolve('./sources'),
+                Subway: path.resolve('./sources'),
             },
-            extensions: ['.js', '.ts'],
+            extensions: [ '.js', '.ts' ],
         },
         entry: {
             subway: './sources/index.ts',
@@ -39,6 +39,6 @@ module.exports = env => {
         ],
         optimization: {
             minimizer: env.production ? [ new TerserJSPlugin() ] : [],
-        }
+        },
     };
 };
