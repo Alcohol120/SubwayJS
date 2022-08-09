@@ -107,30 +107,28 @@ Optional segments has less priority
 
 ## Middleware hooks
 
-    import { Middleware } from 'Subway';
+    import { IMiddleware, Request, Route, TOnLoad } from 'Subway';
 
-    class CustomMiddleware extends Middleware {
-        
-        // execute before estimation start
-        onEstimationStart(request, route) {
-            // this hook don't return anything
-        }
+    class CustomMiddleware implements IMiddleware {
 
         // execute after route estimated
-        onEstimated(rate, request, route) {
+        onEstimated(rate : number, request : Request, route : Route) : number {
             // this hook should return integer
             // return -1 to skip current route
             return rate;
         }
 
-        // execute before route loading start
-        onResolvingStart(onLoad, request, route) {
-            // this hook should return callback which will be called as result of route loading
-            return onLoad;            
+        // execute before route loaded
+        async onResolving(onLoad : TOnLoad, request, request : Request, route : Route) : TOnLoad | Promise<TOnLoad> {
+            // this hook can by async or syncronous and should return or promise onLoad callback
+            return new Promise(resolve => {
+                // do something before load route
+                resolve(onLoad);
+            });
         }
 
         // execute after route loaded
-        onResolved(request, route) {
+        onResolved(request, request : Request, route : Route) {
             // this hook don't return anything
         }
 
@@ -159,6 +157,7 @@ Optional segments has less priority
     class Auth extends Middleware {
         
         onResolving(onLoad, request) {
+            // check if user logged in
             if(document.cookie.indexOf('user=') >= 0) {
                 return onLoad;
             } else {

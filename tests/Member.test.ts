@@ -1,7 +1,7 @@
 import { Member } from 'Subway/Member';
-import { Middleware } from 'Subway/Middleware';
+import { IMiddleware } from 'Subway/Middleware';
 
-class TestMiddleware extends Middleware {}
+class TestMiddleware implements IMiddleware {}
 
 describe('Member', function () {
     describe('name', function () {
@@ -21,7 +21,7 @@ describe('Member', function () {
             const middleware = new TestMiddleware();
             member.middleware(middleware);
             expect(member._middleware.length).toBe(1);
-            expect((member._middleware as Middleware[])[0]).toBe(middleware);
+            expect((member._middleware as IMiddleware[])[0]).toBe(middleware);
         });
         it('Should add multiple middleware', function () {
             const member = new (Member as any)('');
@@ -29,8 +29,8 @@ describe('Member', function () {
             const middleware2 = function () {};
             member.middleware(middleware1, middleware2);
             expect(member._middleware.length).toBe(2);
-            expect((member._middleware as Middleware[])[0]).toBe(middleware1);
-            expect((member._middleware as Middleware[])[1]).toBe(middleware2);
+            expect((member._middleware as IMiddleware[])[0]).toBe(middleware1);
+            expect((member._middleware as IMiddleware[])[1]).toBe(middleware2);
         });
         it('Should return itself', function () {
             const member = new (Member as any)('');

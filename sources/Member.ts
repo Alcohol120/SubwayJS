@@ -1,17 +1,17 @@
 import { Segment } from 'Subway/Segment';
-import { Middleware } from 'Subway/Middleware';
+import { IMiddleware } from 'Subway/Middleware';
 
 export interface IParentProps {
     groups : string[],
     segments : Segment[],
-    middleware : Middleware[],
+    middleware : IMiddleware[],
 }
 
 export abstract class Member {
 
     protected _name : string = '';
     protected _segments : Segment[] = [];
-    protected _middleware : Middleware[] = [];
+    protected _middleware : IMiddleware[] = [];
 
     protected constructor(path : string) {
         this.fill(path);
@@ -22,7 +22,7 @@ export abstract class Member {
         return this;
     }
 
-    public middleware(...middleware : Middleware[]) : Member {
+    public middleware(...middleware : IMiddleware[]) : Member {
         this._middleware.push(...middleware);
         return this;
     }

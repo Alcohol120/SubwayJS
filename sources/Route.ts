@@ -1,12 +1,12 @@
 import { Segment, ESegmentType } from 'Subway/Segment';
 import { Request } from 'Subway/Request';
-import { Middleware } from 'Subway/Middleware';
+import { IMiddleware } from 'Subway/Middleware';
 
 export interface IRouteProps {
     name : string,
     groups : string[],
     segments : Segment[],
-    middleware : Middleware[],
+    middleware : IMiddleware[],
 }
 
 export type TOnLoad = (request : Request, route : Route) => void;
@@ -16,7 +16,7 @@ export class Route {
     private readonly _name : string = '';
     private readonly _groups : string[] = [];
     private readonly _segments : Segment[] = [];
-    private readonly _middleware : Middleware[] = [];
+    private readonly _middleware : IMiddleware[] = [];
     private readonly _onLoad : TOnLoad;
 
     public get name() : string {
@@ -41,7 +41,6 @@ export class Route {
     }
 
     public estimate(request : Request) : number {
-        for(let i = 0; i < this._middleware.length; i++) this._middleware[i].onEstimationStart(request, this);
         const paths = request.segments;
         const rates = new Array(this._segments.length).fill(0);
         let pathIndex = 0;
@@ -117,13 +116,13 @@ export class Route {
         return `/${paths.join('/')}`;
     }
 
-    public resolve(request : Request) : void {
+    public async resolve(request : Request) : Promise<void> {
         let onLoad = this._onLoad;
         for(let i = 0; i < this._middleware.length; i++) {
-            onLoad = this._middleware[i].onResolvingStart(this._onLoad, request, this);
+            onLoad = await this._middleware[i].onResolving(this._onLoad, request, this);
         }
-        for(let i = 0; i < this._middleware.length; i++) this._middleware[i].onResolved(request, this);
         onLoad(request, this);
+        for(let i = 0; i < this._middleware.length; i++) this._middleware[i].onResolved(request, this);
     }
 
 }
