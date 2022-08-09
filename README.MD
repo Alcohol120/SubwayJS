@@ -146,7 +146,7 @@ Optional segments has less priority
 
 #### Multiple middleware
 
-    class Logger extends Middleware {
+    class Logger implements IMiddleware {
         
         onResolved(request, route) {
             console.log(request.path, request.query, route.name);
@@ -154,7 +154,7 @@ Optional segments has less priority
         
     }
 
-    class Auth extends Middleware {
+    class Auth implements IMiddleware {
         
         onResolving(onLoad, request) {
             // check if user logged in
