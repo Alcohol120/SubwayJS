@@ -85,7 +85,10 @@ export class Route {
         // calculate summary rate
         let rate = 0;
         for(let i = 0; i < rates.length; i++) rate += rates[i];
-        for(let i = 0; i < this._middleware.length; i++) rate = this._middleware[i].onEstimated(rate, request, this);
+        for(let i = 0; i < this._middleware.length; i++) {
+            if(!this._middleware[i].onEstimated) continue;
+            rate = this._middleware[i].onEstimated(rate, request, this);
+        }
         return rate;
     }
 
@@ -119,10 +122,14 @@ export class Route {
     public async resolve(request : Request) : Promise<void> {
         let onLoad = this._onLoad;
         for(let i = 0; i < this._middleware.length; i++) {
+            if(!this._middleware[i].onResolving) continue;
             onLoad = await this._middleware[i].onResolving(this._onLoad, request, this);
         }
         onLoad(request, this);
-        for(let i = 0; i < this._middleware.length; i++) this._middleware[i].onResolved(request, this);
+        for(let i = 0; i < this._middleware.length; i++) {
+            if(!this._middleware[i].onResolved) continue;
+            this._middleware[i].onResolved(request, this);
+        }
     }
 
 }
