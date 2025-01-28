@@ -15,7 +15,7 @@ const getRoute = function (path : string) : Route {
 };
 
 describe('Route', function () {
-    describe('isGroup', function () {
+    describe('inGroup', function () {
         it('Return true', function () {
             const route = new Route({
                 name: '',

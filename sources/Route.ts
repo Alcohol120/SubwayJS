@@ -123,7 +123,7 @@ export class Route {
         let onLoad = this._onLoad;
         for(let i = 0; i < this._middleware.length; i++) {
             if(!this._middleware[i].onResolving) continue;
-            onLoad = await this._middleware[i].onResolving(this._onLoad, request, this);
+            onLoad = await this._middleware[i].onResolving(onLoad, request, this);
         }
         onLoad(request, this);
         for(let i = 0; i < this._middleware.length; i++) {

@@ -194,6 +194,6 @@ Optional segments has less priority
         .name : string // name of route or empty string if not defined
         .groups : string[] // array with names of groups wich contain this route 
         .inGroup(name : string) : boolean // check if this route in group with specific name
-        .estimate(request : Request) : number // estimate route (middleware hooks will be executed)
+        .estimate(request : Request) : number // estimate route (onEstimated() middleware hooks will be executed if exists)
         .getUrl(props : Record<string, string>) : string // get URL of this route. Keys from 'props' parameter will be used to replace variable segments. For example: map.route('/foo/{bar}').getUrl({ bar: 'something' }) will return '/foo/something'
-        .resolve(request : Request) // load route (middleware hooks will be executed)
+        .resolve(request : Request) // load route (onResolving() and onResolved() middleware hooks will be executed if exists)
